@@ -1,30 +1,32 @@
 function remindToClean() {
-  //Get Stake Suite Cleaning Schedule Sheet
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Stake Suite Cleaning Schedule");
+  //Get Rotating Assignment Sheet
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Rotating Assignment Schedule");
   
   //Get "Who's Next" Key
   var wnkey = sheet.getRange("E2");
   
-  //Email Stake Presidency Member with Matching Key
-  stakepresidency = sheet.getRange("C2:C9");
-  sph = stakepresidency.getHeight()
+  //Email Volunteer with Matching Key
+  volunteers = sheet.getRange("C2:C9");
+  number_of_volunteers = volunteers.getHeight()
   match = 0;
+  
   //Find Match
-  for (i = 1; i <= sph; i++) {
+  for (i = 1; i <= number_of_volunteers; i++) {
     if (sheet.getRange(i+1,3).getValue() == wnkey.getValue()) {
       name = sheet.getRange(i+1,2).getValue();
       emailAddress = sheet.getRange(i+1,4).getValue();
-      /*sheet.getRange(i+1,6).setValue(emailAddress); //Debug */
+      /*sheet.getRange(i+1,6).setValue(emailAddress); //Debug test */
       break
     }
   }
+  
   //Send Email
   MailApp.sendEmail({
     to: emailAddress,
-    bcc: "northparkpresidency@gmail.com",
-    subject: "Your Turn to Clean the Stake Offices",
-    body: name + ",\n\nThis week, it is your turn to clean the Stake Offices. This might include:\nWatering the plant by the door.\n-Garbages (clerk office, lobby, SP office, HC room)\n-Paper shredder bin\n-Vacuum\n-High council table wipe down\n-White Boards\n\nRegards,\nStake Executive Secretary",
-    replyTo: "northparkpresidency@gmail.com"
+    //bcc: "youremail@email.com",
+    subject: "Your Turn for Volunteer Assignment",
+    body: name + ",\n\nThis week, it is your turn to do the volunteer assignment. \nThanks!",
+    //replyTo: "youremail@email.com" //!!This is required.
     });
   
   //Update "Who's Next" Key
